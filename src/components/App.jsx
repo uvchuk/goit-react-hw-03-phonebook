@@ -12,11 +12,11 @@ class PhoneBook extends Component {
     filter: '',
   };
 
-  getValue = ({ target }) => {
+  getValue({ target }) {
     this.setState({
       [target.name]: target.value,
     });
-  };
+  }
 
   createContact = (evt, name, number) => {
     evt.preventDefault();
@@ -61,11 +61,17 @@ class PhoneBook extends Component {
     return (
       <>
         <Section title={'Phonebook'}>
-          <ContactForm createContact={this.createContact}></ContactForm>
+          <ContactForm
+            createContact={this.createContact}
+            getValue={this.getValue}
+          ></ContactForm>
         </Section>
         {this.state.contacts.length > 0 && (
           <Section title={'Contacts'}>
-            <Filter getValue={this.getValue} setValue={this.state}></Filter>
+            <Filter
+              getValue={this.getValue.bind(this)}
+              setValue={this.state}
+            ></Filter>
             <ContactList>
               <Contact
                 contacts={
