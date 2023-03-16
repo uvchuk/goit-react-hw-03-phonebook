@@ -6,11 +6,27 @@ import { Filter } from './Filter/Filter';
 import { ContactList } from './ContactList/ContactList';
 import { Contact } from './Contact/Contact';
 
+const SAVED_CONTACTS = 'saved_contacts';
+
 class PhoneBook extends Component {
   state = {
     contacts: [],
     filter: '',
   };
+
+  componentDidMount() {
+    const savedContacts = localStorage.getItem(SAVED_CONTACTS);
+    const parsedContacts = JSON.parse(savedContacts);
+    if (parsedContacts.length > 0) {
+      this.setState(() => ({
+        contacts: parsedContacts,
+      }));
+    }
+  }
+
+  componentDidUpdate() {
+    localStorage.setItem(SAVED_CONTACTS, JSON.stringify(this.state.contacts));
+  }
 
   getValue({ target }) {
     this.setState({
@@ -28,8 +44,6 @@ class PhoneBook extends Component {
 
     if (this.checkInContacts(contact.name))
       return alert(`${contact.name} is already in contacts`);
-    // this.state.contacts.push(contact);
-    // this.forceUpdate();
     this.setState(prevState => ({
       contacts: [...prevState.contacts, contact],
     }));
@@ -48,9 +62,6 @@ class PhoneBook extends Component {
   };
 
   removeContact = key => {
-    // this.state.contacts.find((contact, index) => {
-    //   if (contact.id === key) this.state.contacts.splice(index, 1);
-    // });
     const updatedContacts = this.state.contacts.filter(
       contact => contact.id !== key
     );
