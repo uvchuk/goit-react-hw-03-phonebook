@@ -16,11 +16,13 @@ class PhoneBook extends Component {
 
   componentDidMount() {
     const savedContacts = localStorage.getItem(SAVED_CONTACTS);
-    const parsedContacts = JSON.parse(savedContacts);
-    if (parsedContacts.length > 0) {
-      this.setState(() => ({
-        contacts: parsedContacts,
-      }));
+    if (savedContacts) {
+      const parsedContacts = JSON.parse(savedContacts);
+      if (parsedContacts.length > 0) {
+        this.setState(() => ({
+          contacts: parsedContacts,
+        }));
+      }
     }
   }
 
